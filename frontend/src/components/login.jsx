@@ -1,10 +1,18 @@
 import { useFormik } from 'formik';
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useContext, useState } from 'react';
 import { Card, Form, Button, FloatingLabel } from 'react-bootstrap';
+import { useLocation, useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
+import axios from 'axios';
+import routes from '../routes.js';
+import AuthContext from '../context/index.js';
 
 const Login = () => {
+  const auth = useContext(AuthContext);
+  const [authFailed, setAuthFailed] = useState(false);
   const inputRef = useRef();
+  const location = useLocation();
+  const navigate = useNavigate();
   useEffect(() => {
     inputRef.current.focus();
   }, []);
@@ -19,12 +27,25 @@ const Login = () => {
         .required(),
       password: yup
         .string()
-        .required()
-        .min(8)
+        .required(),
     }),
-    onSubmit: (values, { setSubmitting }) => {
-      console.log(JSON.stringify(values, null, 2));
-      setSubmitting(false);
+    onSubmit: async (values) => {
+      setAuthFailed(false);
+      try {
+        const { data } = await axios.post(routes.loginPath(), values);
+        localStorage.setItem('userId', JSON.stringify(data));
+        auth.logIn();
+        const { from } = location.state;
+        navigate(from);
+      } catch (err) {
+        formik.setSubmitting(false);
+        if (err.isAxiosError && err.response.status === 401) {
+          setAuthFailed(true);
+          inputRef.current.select();
+          return;
+        }
+        throw err;
+      }
     },
   });
   return (
@@ -43,10 +64,11 @@ const Login = () => {
                   name='username'
                   placeholder='Name'
                   autoComplete='username'
+                  isInvalid={authFailed}
                   onChange={formik.handleChange}
                   value={formik.values.username}
                   ref={inputRef}
-                ></Form.Control>
+                />
               </FloatingLabel>
             </Form.Group>
             <Form.Group>
@@ -60,9 +82,11 @@ const Login = () => {
                   name='password'
                   placeholder='Password'
                   autoComplete='current-password'
+                  isInvalid={authFailed}
                   onChange={formik.handleChange}
                   value={formik.values.password}
-                ></Form.Control>
+                />
+                <Form.Control.Feedback type="invalid">the username or password is incorrect</Form.Control.Feedback>
               </FloatingLabel>
             </Form.Group>
             <Button type='submit'>Login</Button>
