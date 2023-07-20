@@ -1,9 +1,9 @@
 import { BrowserRouter, Routes, Route, Navigate, Link, useLocation } from 'react-router-dom';
 import { useContext, useState } from 'react';
 import { Container, Navbar, Button } from 'react-bootstrap';
-import Main from './main.jsx';
-import Login from './login.jsx';
-import NotFound from './notfound.jsx';
+import Chat from './Chat.jsx';
+import Login from './Login.jsx';
+import NotFound from './NotFound.jsx';
 import AuthContext from '../context/index.js';
 
 const AuthProvider = ({ children }) => {
@@ -52,7 +52,7 @@ const App = () => {
         <Routes>
           <Route path="/" element={(
             <PrivateRoute>
-              <Main />
+              <Chat />
             </PrivateRoute>
           )} />
           <Route path="login" element={<Login />} />
