@@ -4,11 +4,11 @@ import { Container, Navbar, Button } from 'react-bootstrap';
 import Chat from './Chat.jsx';
 import Login from './Login.jsx';
 import NotFound from './NotFound.jsx';
-import AuthContext from '../context/index.js';
+import { AuthContext, ChannelContext } from '../context/index.js';
 
 const AuthProvider = ({ children }) => {
   const userId = JSON.parse(localStorage.getItem('userId'));
-  const [loggedIn, setLoggedIn] = useState(userId && userId.token);
+  const [loggedIn, setLoggedIn] = useState(!!userId);
   const logIn = () => setLoggedIn(true);
   const logOut = () => {
     localStorage.removeItem('userId');
@@ -39,6 +39,16 @@ const AuthButton = () => {
   );
 };
 
+const StoreProvider = () => {
+  const [selected, setSelectedChannel] = useState(1);
+  const changeChannel = (id) => setSelectedChannel(id);
+  return (
+    <ChannelContext.Provider value={{ selected, changeChannel }} >
+      <Chat />
+    </ChannelContext.Provider>
+  );
+};
+
 const App = () => {
   return (
     <AuthProvider>
@@ -52,7 +62,7 @@ const App = () => {
         <Routes>
           <Route path="/" element={(
             <PrivateRoute>
-              <Chat />
+              <StoreProvider />
             </PrivateRoute>
           )} />
           <Route path="login" element={<Login />} />

@@ -5,7 +5,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
 import axios from 'axios';
 import routes from '../routes.js';
-import AuthContext from '../context/index.js';
+import { AuthContext } from '../context/index.js';
 
 const Login = () => {
   const auth = useContext(AuthContext);

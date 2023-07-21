@@ -4,7 +4,7 @@
   "description": "SPA chat messenger",
   "main": "./frontend/src/index.js",
   "scripts": {
-    "build": "npm run build --prefix frontend",
+    "build": "npm run build --prefix frontend --profiler",
     "start": "start-server -s ./frontend/build",
     "dev": "npm start & npm start --prefix frontend",
     "postinstall": "cd frontend && npm ci"
