@@ -1,12 +1,16 @@
 import * as yup from 'yup';
 import { useFormik } from 'formik';
-import { useAutoSelect, useSocket } from '../../../hooks/index.js';
+import { useSocket } from '../../../hooks/index.js';
 import { useSelector } from 'react-redux';
 import { Button, Form, Modal } from "react-bootstrap";
 import { channelsSelectors } from "../../../slices/channelsSlice.js";
+import { useRef, useEffect } from 'react';
 
 const Rename = ({ item, onHide }) => {
-  const inputRef = useAutoSelect();
+  const inputRef = useRef();
+  useEffect(() => {
+    inputRef.current.select();
+  }, []);
   const emit = useSocket();
   const channelsNames = useSelector(channelsSelectors.selectAll).map(({ name }) => name);
   const formik = useFormik({

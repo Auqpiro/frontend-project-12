@@ -1,7 +1,8 @@
 import * as yup from 'yup';
+import { useEffect, useRef } from 'react';
 import { useSelector } from "react-redux";
 import { useFormik } from "formik";
-import { useAutoFocus, useSocket } from '../../hooks/index.js';
+import { useSocket } from '../../hooks/index.js';
 import { Form, Button } from "react-bootstrap";
 
 const MessageInput = () => {
@@ -28,7 +29,10 @@ const MessageInput = () => {
       }
     },
   });
-  const inputRef = useAutoFocus(channelId, formik.isSubmitting);
+  const inputRef = useRef(null);
+  useEffect(() => {
+    inputRef.current.focus();
+  }, [channelId, formik.isSubmitting]);
   return (
     <Form noValidate onSubmit={formik.handleSubmit}>
       <fieldset disabled={formik.isSubmitting}>
