@@ -1,5 +1,10 @@
 import { createContext } from "react";
 
-export const AuthContext = createContext({});
+const AuthContext = createContext({});
 
-export const ChannelContext = createContext({});
+const SocketContext = createContext({});
+
+export {
+  AuthContext,
+  SocketContext,
+};
