@@ -12,7 +12,7 @@ import Login from './Login.jsx';
 import NotFound from './NotFound.jsx';
 
 const SocketProvider = ({ children }) => {
-  const socket = io('http://localhost:3000');
+  const socket = io();
   const dispatch = useDispatch();
   socket.on('newMessage', (payload) => {
     dispatch(messagesActions.addMessage(payload));
