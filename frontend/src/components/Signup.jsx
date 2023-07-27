@@ -2,14 +2,14 @@ import axios from 'axios';
 import * as yup from 'yup';
 import { useFormik } from 'formik';
 import { useRef, useEffect, useState } from 'react';
-import { useLocation, useNavigate, Link } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/index.js';
 import { Card, Form, Button, FloatingLabel, Container, Row, Col } from 'react-bootstrap';
 import routes from '../routes.js';
 
-const Login = () => {
+const Signup = () => {
   const auth = useAuth();
-  const [authFailed, setAuthFailed] = useState(false);
+  const [registryFailed, setRegistryFailed] = useState(false);
   const inputRef = useRef();
   const location = useLocation();
   const { from } = location.state;
@@ -21,26 +21,35 @@ const Login = () => {
     initialValues: {
       username: '',
       password: '',
+      confirmPassword: '',
     },
     validationSchema: yup.object().shape({
       username: yup
         .string()
-        .required(),
+        .required()
+        .min(3)
+        .max(20),
       password: yup
         .string()
-        .required(),
+        .required()
+        .min(6),
+      confirmPassword: yup
+        .string()
+        .required()
+        .min(6)
+        .oneOf([yup.ref('password')]),
     }),
-    onSubmit: async (values) => {
-      setAuthFailed(false);
+    onSubmit: async ({ username, password }) => {
+      setRegistryFailed(false);
       try {
-        const { data } = await axios.post(routes.loginPath(), values);
+        const { data } = await axios.post(routes.createPath(), { username, password });
         localStorage.setItem('userId', JSON.stringify(data));
         auth.logIn();
         navigate(from);
       } catch (err) {
         formik.setSubmitting(false);
-        if (err.isAxiosError && err.response.status === 401) {
-          setAuthFailed(true);
+        if (err.isAxiosError && err.response.status === 409) {
+          setRegistryFailed(true);
           inputRef.current.select();
           return;
         }
@@ -54,13 +63,13 @@ const Login = () => {
         <Col>
           <Card>
             <Card.Body>
-              <h1>Log In</h1>
+              <h1>Registration</h1>
               <Form onSubmit={formik.handleSubmit}>
                 <fieldset disabled={formik.isSubmitting}>
                   <Form.Group>
                     <FloatingLabel
                       controlId='username'
-                      label='Username'
+                      label='3 to 20 characters'
                     >
                       <Form.Control
                         required
@@ -68,7 +77,7 @@ const Login = () => {
                         name='username'
                         placeholder='Username'
                         autoComplete='username'
-                        isInvalid={authFailed}
+                        isInvalid={registryFailed}
                         onChange={formik.handleChange}
                         value={formik.values.username}
                         ref={inputRef}
@@ -78,28 +87,42 @@ const Login = () => {
                   <Form.Group>
                     <FloatingLabel
                       controlId='password'
-                      label='Password'
+                      label='at least 6 characters'
                     >
                       <Form.Control
                         required
                         type='password'
                         name='password'
                         placeholder='Password'
-                        autoComplete='current-password'
-                        isInvalid={authFailed}
+                        autoComplete='new-password'
+                        isInvalid={registryFailed}
                         onChange={formik.handleChange}
                         value={formik.values.password}
                         />
-                      <Form.Control.Feedback type='invalid'>the username or password is incorrect</Form.Control.Feedback>
                     </FloatingLabel>
                   </Form.Group>
-                  <Button type='submit'>Login</Button>
+                  <Form.Group>
+                    <FloatingLabel
+                      controlId='confirmPassword'
+                      label='must match'
+                    >
+                      <Form.Control
+                        required
+                        type='password'
+                        name='confirmPassword'
+                        placeholder='Confirm password'
+                        autoComplete='new-password'
+                        isInvalid={registryFailed}
+                        onChange={formik.handleChange}
+                        value={formik.values.confirmPassword}
+                        />
+                      <Form.Control.Feedback type='invalid'>the username already exist</Form.Control.Feedback>
+                    </FloatingLabel>
+                  </Form.Group>
+                  <Button type='submit'>Registry</Button>
                 </fieldset>
               </Form>
             </Card.Body>
-            <Card.Footer>
-              <Link to='/signup' state={{ from }}>Registration</Link>
-            </Card.Footer>
           </Card>
         </Col>
       </Row>
@@ -107,4 +130,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Signup;

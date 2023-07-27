@@ -5,10 +5,11 @@ import { AuthContext, SocketContext } from '../context/index.js';
 import { useAuth } from '../hooks/index.js';
 import { channelsActions } from '../slices/channelsSlice.js';
 import { messagesActions } from '../slices/messagesSlice.js';
-import { BrowserRouter, Routes, Route, Navigate, Link, useLocation } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, useLocation, Link } from 'react-router-dom';
 import { Container, Navbar, Button } from 'react-bootstrap';
 import Main from './chat/index.jsx';
 import Login from './Login.jsx';
+import Signup from './Signup.jsx';
 import NotFound from './NotFound.jsx';
 
 const SocketProvider = ({ children }) => {
@@ -27,7 +28,7 @@ const SocketProvider = ({ children }) => {
     dispatch(channelsActions.renameChannel(payload));
   });
   const clarify = (...arg) => new Promise((res, rej) => {
-    socket.timeout(5000).emit(...arg, (err, response) => (response?.status === 'ok' ? res(response?.data) : rej()));
+    socket.timeout(5000).emit(...arg, (err, response) => (response?.status === 'ok' ? res(response?.data) : rej(err)));
   });
   const emitters = {
     sendMessage: (payload) => clarify('newMessage', payload),
@@ -72,11 +73,10 @@ const PrivateRoute = ({ children }) => {
 
 const AuthButton = () => {
   const auth = useContext(AuthContext);
-  const location = useLocation();
   return (
     auth.loggedIn
       ? <Button onClick={auth.logOut}>Log out</Button>
-      : <Button as={Link} to='/login' state={{ from: location }}>Log in</Button>
+      : null
   );
 };
 
@@ -98,6 +98,7 @@ const App = () => {
               </PrivateRoute>
             )} />
             <Route path='login' element={<Login />} />
+            <Route path='signup' element={<Signup />} />
             <Route path='*' element={<NotFound />} />
           </Routes>
         </BrowserRouter>
