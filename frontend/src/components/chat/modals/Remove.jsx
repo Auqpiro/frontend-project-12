@@ -1,9 +1,11 @@
 import { useFormik } from "formik";
+import { useTranslation } from "react-i18next";
 import { useSocket, useAutoFocus } from '../../../hooks/index.js';
 import { Button, Form, Modal } from "react-bootstrap";
 
 
 const Remove = ({ item, onHide }) => {
+  const { t } = useTranslation();
   const emit = useSocket();
   const btnRef = useAutoFocus();
   const formik = useFormik({
@@ -21,13 +23,14 @@ const Remove = ({ item, onHide }) => {
   return (
     <Modal show>
       <Modal.Header closeButton onHide={onHide}>
-        <Modal.Title>Remove</Modal.Title>
+        <Modal.Title>{t('modals.headers.remove')}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
+        <p>{t('modals.concern')}</p>
         <Form onSubmit={formik.handleSubmit}>
           <fieldset disabled={formik.isSubmitting}>
-            <Button variant='secondary' onClick={onHide}>Cancel</Button>
-            <Button variant='danger' type='submit' ref={btnRef}>Send</Button>
+            <Button variant='secondary' onClick={onHide}>{t('modals.buttons.cancel')}</Button>
+            <Button variant='danger' type='submit' ref={btnRef}>{t('modals.buttons.delete')}</Button>
           </fieldset>
         </Form>
       </Modal.Body>

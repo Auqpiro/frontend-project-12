@@ -1,11 +1,13 @@
 import * as yup from 'yup';
 import { useFormik } from 'formik';
 import { useDispatch, useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
 import { useSocket, useAutoFocus } from '../../../hooks/index.js';
 import { channelsActions, channelsSelectors } from "../../../slices/channelsSlice.js";
 import { Button, Form, Modal } from "react-bootstrap";
 
 const Add = ({ onHide }) => {
+  const { t } = useTranslation();
   const inputRef = useAutoFocus();
   const emit = useSocket();
   const dispatch = useDispatch();
@@ -18,9 +20,10 @@ const Add = ({ onHide }) => {
       name: yup
         .string()
         .trim()
-        .required()
-        .min(3)
-        .notOneOf(channelsNames),
+        .required(t('modals.rules.required'))
+        .min(3, t('modals.rules.name'))
+        .max(20, t('modals.rules.name'))
+        .notOneOf(channelsNames, t('modals.rules.uniq')),
     }),
     onSubmit: async (value) => {
       try {
@@ -29,7 +32,6 @@ const Add = ({ onHide }) => {
         onHide();
       } catch (err) {
         formik.setSubmitting(false);
-        formik.resetForm();
         throw err;
       }
     },
@@ -37,27 +39,25 @@ const Add = ({ onHide }) => {
   return (
     <Modal show>
       <Modal.Header closeButton onHide={onHide}>
-        <Modal.Title>Add</Modal.Title>
+        <Modal.Title>{t('modals.headers.add')}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form onSubmit={formik.handleSubmit}>
           <fieldset disabled={formik.isSubmitting}>
-            <Form.Group>
-                <Form.Label htmlFor='name'>Name</Form.Label>
+            <Form.Group controlId='name'>
+                <Form.Label className='visually-hidden'>Имя канала</Form.Label>
                 <Form.Control
+                  ref={inputRef}
                   required
                   type='text'
                   name='name'
-                  id='name'
-                  onChange={formik.handleChange}
-                  value={formik.values.name}
-                  ref={inputRef}
+                  {...formik.getFieldProps('name')}
                   isInvalid={formik.errors.name && formik.touched.name}
                 />
-                <Form.Control.Feedback type='invalid'>Wrong!</Form.Control.Feedback>
+                <Form.Control.Feedback type='invalid'>{formik.errors.name}</Form.Control.Feedback>
             </Form.Group>
-            <Button variant='secondary' onClick={onHide}>Cancel</Button>
-            <Button variant='primary' type='submit'>Send</Button>
+            <Button variant='secondary' onClick={onHide}>{t('modals.buttons.cancel')}</Button>
+            <Button variant='primary' type='submit'>{t('modals.buttons.submit')}</Button>
           </fieldset>
         </Form>
       </Modal.Body>

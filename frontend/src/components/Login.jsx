@@ -1,35 +1,25 @@
 import axios from 'axios';
-import * as yup from 'yup';
 import { useFormik } from 'formik';
-import { useRef, useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useLocation, useNavigate, Link } from 'react-router-dom';
-import { useAuth } from '../hooks/index.js';
+import { useTranslation } from 'react-i18next';
+import { useAuth, useAutoFocus } from '../hooks/index.js';
 import { Card, Form, Button, FloatingLabel, Container, Row, Col } from 'react-bootstrap';
 import routes from '../routes.js';
 
 const Login = () => {
-  const auth = useAuth();
+  const { t } = useTranslation();
   const [authFailed, setAuthFailed] = useState(false);
-  const inputRef = useRef();
+  const auth = useAuth();
+  const inputRef = useAutoFocus();
   const location = useLocation();
   const { from } = location.state;
   const navigate = useNavigate();
-  useEffect(() => {
-    inputRef.current.focus();
-  }, []);
   const formik = useFormik({
     initialValues: {
       username: '',
       password: '',
     },
-    validationSchema: yup.object().shape({
-      username: yup
-        .string()
-        .required(),
-      password: yup
-        .string()
-        .required(),
-    }),
     onSubmit: async (values) => {
       setAuthFailed(false);
       try {
@@ -41,8 +31,6 @@ const Login = () => {
         formik.setSubmitting(false);
         if (err.isAxiosError && err.response.status === 401) {
           setAuthFailed(true);
-          inputRef.current.select();
-          return;
         }
         throw err;
       }
@@ -54,51 +42,46 @@ const Login = () => {
         <Col>
           <Card>
             <Card.Body>
-              <h1>Log In</h1>
               <Form onSubmit={formik.handleSubmit}>
                 <fieldset disabled={formik.isSubmitting}>
-                  <Form.Group>
-                    <FloatingLabel
-                      controlId='username'
-                      label='Username'
-                    >
-                      <Form.Control
-                        required
-                        type='text'
-                        name='username'
-                        placeholder='Username'
-                        autoComplete='username'
-                        isInvalid={authFailed}
-                        onChange={formik.handleChange}
-                        value={formik.values.username}
-                        ref={inputRef}
-                      />
-                    </FloatingLabel>
-                  </Form.Group>
-                  <Form.Group>
-                    <FloatingLabel
-                      controlId='password'
-                      label='Password'
-                    >
-                      <Form.Control
-                        required
-                        type='password'
-                        name='password'
-                        placeholder='Password'
-                        autoComplete='current-password'
-                        isInvalid={authFailed}
-                        onChange={formik.handleChange}
-                        value={formik.values.password}
-                        />
-                      <Form.Control.Feedback type='invalid'>the username or password is incorrect</Form.Control.Feedback>
-                    </FloatingLabel>
-                  </Form.Group>
-                  <Button type='submit'>Login</Button>
+                  <h1>{t('signin.header')}</h1>
+                  <FloatingLabel
+                    controlId='username'
+                    label={t('signin.username')}
+                  >
+                    <Form.Control
+                      ref={inputRef}
+                      required
+                      type='text'
+                      name='username'
+                      autoComplete='username'
+                      placeholder={t('signin.username')}
+                      {...formik.getFieldProps('username')}
+                      isInvalid={authFailed}
+                    />
+                  </FloatingLabel>
+                  <FloatingLabel
+                    controlId='password'
+                    label={t('signin.password')}
+                  >
+                    <Form.Control
+                      required
+                      type='password'
+                      name='password'
+                      autoComplete='current-password'
+                      placeholder={t('signin.password')}
+                      {...formik.getFieldProps('password')}
+                      isInvalid={authFailed}
+                    />
+                    {authFailed ? <div className='invalid-tooltip'>{t('signin.error')}</div> : null}
+                  </FloatingLabel>
+                  <Button type='submit'>{t('signin.submit')}</Button>
                 </fieldset>
               </Form>
             </Card.Body>
             <Card.Footer>
-              <Link to='/signup' state={{ from }}>Registration</Link>
+              <span>{t('signin.footer.message')}</span>
+              <Link to='/signup' state={{ from }}>{t('signin.footer.link')}</Link>
             </Card.Footer>
           </Card>
         </Col>

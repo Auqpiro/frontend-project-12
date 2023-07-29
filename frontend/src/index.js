@@ -1,12 +1,11 @@
 import ReactDOM from 'react-dom/client';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import App from './components/App';
-import { Provider } from 'react-redux';
-import store from './slices/index.js';
+import MainProvider from './providers/index.jsx';
+import App from './components/App.jsx';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <Provider store={store}>
+  <MainProvider>
     <App />
-  </Provider>
+  </MainProvider>
 );

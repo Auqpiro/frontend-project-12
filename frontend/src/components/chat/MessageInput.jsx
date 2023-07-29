@@ -3,9 +3,11 @@ import { useEffect, useRef } from 'react';
 import { useSelector } from "react-redux";
 import { useFormik } from "formik";
 import { useSocket } from '../../hooks/index.js';
-import { Form, Button } from "react-bootstrap";
+import { useTranslation } from "react-i18next";
+import { Form, Button, InputGroup } from "react-bootstrap";
 
 const MessageInput = () => {
+  const { t } = useTranslation();
   const emit = useSocket();
   const channelId = useSelector((state) => state.channelsReducer.currentChannelId);
   const { username } = JSON.parse(localStorage.getItem('userId'));
@@ -36,20 +38,18 @@ const MessageInput = () => {
   return (
     <Form noValidate onSubmit={formik.handleSubmit}>
       <fieldset disabled={formik.isSubmitting}>
-        <Form.Group>
+        <InputGroup>
           <Form.Control
+            ref={inputRef}
             required
             type='text'
             name='body'
-            placeholder='Message'
-            value={formik.values.body}
-            onChange={formik.handleChange}
-            isInvalid={formik.errors.body && formik.touched.body}
-            ref={inputRef}
+            aria-label='Новое сообщение'
+            placeholder={t('messages.label')}
+            {...formik.getFieldProps('body')}
           />
-          <Form.Control.Feedback type='invalid'>Wrong!</Form.Control.Feedback>
-        </Form.Group>
-        <Button type='submit'>Send</Button>
+          <Button type='submit' disabled={!formik.isValid}>{t('messages.send')}</Button>
+        </InputGroup>
       </fieldset>
     </Form>
   );
