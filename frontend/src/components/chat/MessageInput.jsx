@@ -1,4 +1,5 @@
 import * as yup from 'yup';
+import * as filter from 'leo-profanity';
 import { useEffect, useRef } from 'react';
 import { useSelector } from "react-redux";
 import { useFormik } from "formik";
@@ -8,7 +9,7 @@ import { toast } from 'react-toastify';
 import { Form, Button, InputGroup } from "react-bootstrap";
 
 const MessageInput = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const emit = useSocket();
   const channelId = useSelector((state) => state.channelsReducer.currentChannelId);
   const { username } = JSON.parse(localStorage.getItem('userId'));
@@ -23,8 +24,10 @@ const MessageInput = () => {
         .required(),
     }),
     onSubmit: async ({ body }) => {
+      filter.loadDictionary(['en', 'fr', 'ru'].includes(i18n.language) ? i18n.language : 'ru');
+      const filtered = filter.clean(body);
       try {
-        await emit.sendMessage({ body, channelId, username });
+        await emit.sendMessage({ body: filtered, channelId, username });
         formik.resetForm();
       } catch (err) {
         formik.setSubmitting(false);
