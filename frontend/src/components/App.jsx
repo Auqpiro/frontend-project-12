@@ -1,4 +1,3 @@
-import * as filter from 'leo-profanity';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../hooks/index.js';
 import { BrowserRouter, Routes, Route, Navigate, useLocation, Link } from 'react-router-dom';
@@ -30,10 +29,7 @@ const AuthButton = () => {
 
 const LanguageToggle = () => {
   const { i18n } = useTranslation();
-  const handleSelect = (lng) => {
-    i18n.changeLanguage(lng);
-    filter.loadDictionary(['en', 'fr', 'ru'].includes(lng) ? lng : 'ru');
-  };
+  const handleSelect = (lng) => i18n.changeLanguage(lng);
   const languages = i18n.languages;
   return (
     <Dropdown onSelect={handleSelect}>

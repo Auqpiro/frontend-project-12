@@ -1,20 +1,23 @@
 import { Provider } from 'react-redux';
-import InternationalizationProvider from "./i18n";
+import CollectorProvider from './rollbar';
 import SocketProvider from './soket';
+import InternationalizationProvider from "./i18n";
 import AuthProvider from './auth';
 import store from '../slices/index.js';
 
 const MainProvider = ({ children }) => {
   return (
-    <Provider store={store}>
-      <SocketProvider>
-        <InternationalizationProvider>
-          <AuthProvider>
-            {children}
-          </AuthProvider>
-        </InternationalizationProvider>
-      </SocketProvider>
-    </Provider>
+    <CollectorProvider>
+      <Provider store={store}>
+        <SocketProvider>
+          <InternationalizationProvider>
+            <AuthProvider>
+              {children}
+            </AuthProvider>
+          </InternationalizationProvider>
+        </SocketProvider>
+      </Provider>
+    </CollectorProvider>
   );
 };
 
