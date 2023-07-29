@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { useFormik } from "formik";
 import { useSocket } from '../../hooks/index.js';
 import { useTranslation } from "react-i18next";
+import { toast } from 'react-toastify';
 import { Form, Button, InputGroup } from "react-bootstrap";
 
 const MessageInput = () => {
@@ -27,6 +28,7 @@ const MessageInput = () => {
         formik.resetForm();
       } catch (err) {
         formik.setSubmitting(false);
+        toast.error(t('toast.network'));
         throw err;
       }
     },

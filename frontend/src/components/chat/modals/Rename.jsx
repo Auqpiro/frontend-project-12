@@ -3,6 +3,7 @@ import { useFormik } from 'formik';
 import { useSelector } from 'react-redux';
 import { useTranslation } from "react-i18next";
 import { useSocket } from '../../../hooks/index.js';
+import { toast } from 'react-toastify';
 import { Button, Form, Modal } from "react-bootstrap";
 import { channelsSelectors } from "../../../slices/channelsSlice.js";
 import { useRef, useEffect } from 'react';
@@ -30,8 +31,10 @@ const Rename = ({ item, onHide }) => {
       try {
         await emit.renameChannel(value);
         onHide();
+        toast.success(t('toast.rename'));
       } catch (err) {
         formik.setSubmitting(false);
+        toast.error(t('toast.network'));
         throw err;
       }
     },

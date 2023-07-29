@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useLocation, useNavigate, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAuth, useAutoFocus } from '../hooks/index.js';
+import { toast } from 'react-toastify';
 import { Card, Form, Button, FloatingLabel, Container, Row, Col } from 'react-bootstrap';
 import routes from '../routes.js';
 
@@ -31,6 +32,8 @@ const Login = () => {
         formik.setSubmitting(false);
         if (err.isAxiosError && err.response.status === 401) {
           setAuthFailed(true);
+        } else {
+          toast.error(t('toast.network'));
         }
         throw err;
       }

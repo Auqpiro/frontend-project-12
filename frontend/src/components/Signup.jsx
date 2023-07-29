@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAuth, useAutoFocus } from '../hooks/index.js';
+import { toast } from 'react-toastify';
 import { Card, Form, Button, FloatingLabel, Container, Row, Col } from 'react-bootstrap';
 import routes from '../routes.js';
 
@@ -49,6 +50,8 @@ const Signup = () => {
         formik.setSubmitting(false);
         if (err.isAxiosError && err.response.status === 409) {
           setRegistryFailed(true);
+        } else {
+          toast.error(t('toast.network'));
         }
         throw err;
       }

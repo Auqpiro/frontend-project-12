@@ -1,6 +1,7 @@
 import { useFormik } from "formik";
 import { useTranslation } from "react-i18next";
 import { useSocket, useAutoFocus } from '../../../hooks/index.js';
+import { toast } from 'react-toastify';
 import { Button, Form, Modal } from "react-bootstrap";
 
 
@@ -14,8 +15,10 @@ const Remove = ({ item, onHide }) => {
       try {
         await emit.removeChannel(value);
         onHide();
+        toast.success(t('toast.remove'));
       } catch (err) {
         formik.setSubmitting(false);
+        toast.error(t('toast.network'));
         throw err;
       }
     },

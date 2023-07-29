@@ -3,6 +3,7 @@ import { useFormik } from 'formik';
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { useSocket, useAutoFocus } from '../../../hooks/index.js';
+import { toast } from 'react-toastify';
 import { channelsActions, channelsSelectors } from "../../../slices/channelsSlice.js";
 import { Button, Form, Modal } from "react-bootstrap";
 
@@ -30,8 +31,10 @@ const Add = ({ onHide }) => {
         const { id } = await emit.createChannel(value);
         dispatch(channelsActions.selectCurrentChannel(id));
         onHide();
+        toast.success(t('toast.add'));
       } catch (err) {
         formik.setSubmitting(false);
+        toast.error(t('toast.network'));
         throw err;
       }
     },
