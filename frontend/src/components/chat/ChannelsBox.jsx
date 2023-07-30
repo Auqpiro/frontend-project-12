@@ -60,7 +60,9 @@ const ChannelsBox = () => {
                           variant={id === currentChannelId
                             ? 'primary'
                             : null}
-                        />
+                        >
+                          <span class="visually-hidden">Управление каналом</span>
+                        </Dropdown.Toggle>
                         <Dropdown.Menu>
                           <Dropdown.Item onClick={() => showModal('renaming', { id, name })}>{t('channels.dropdown.rename')}</Dropdown.Item>
                           <Dropdown.Item onClick={() => showModal('removing', { id })}>{t('channels.dropdown.remove')}</Dropdown.Item>
