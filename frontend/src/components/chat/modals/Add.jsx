@@ -1,11 +1,11 @@
 import * as yup from 'yup';
 import { useFormik } from 'formik';
-import { useDispatch, useSelector } from "react-redux";
-import { useTranslation } from "react-i18next";
-import { useSocket, useAutoFocus } from '../../../hooks/index.js';
+import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
-import { channelsActions, channelsSelectors } from "../../../slices/channelsSlice.js";
-import { Button, Form, Modal } from "react-bootstrap";
+import { Button, Form, Modal } from 'react-bootstrap';
+import { useSocket, useAutoFocus } from '../../../hooks/index.js';
+import { channelsActions, channelsSelectors } from '../../../slices/channelsSlice.js';
 
 const Add = ({ onHide }) => {
   const { t } = useTranslation();
@@ -47,20 +47,20 @@ const Add = ({ onHide }) => {
       <Modal.Body>
         <Form onSubmit={formik.handleSubmit}>
           <fieldset disabled={formik.isSubmitting}>
-            <Form.Group controlId='name'>
-                <Form.Label className='visually-hidden'>Имя канала</Form.Label>
-                <Form.Control
-                  ref={inputRef}
-                  required
-                  type='text'
-                  name='name'
-                  {...formik.getFieldProps('name')}
-                  isInvalid={formik.errors.name && formik.touched.name}
-                />
-                <Form.Control.Feedback type='invalid'>{formik.errors.name}</Form.Control.Feedback>
+            <Form.Group controlId="name">
+              <Form.Label className="visually-hidden">Имя канала</Form.Label>
+              <Form.Control
+                ref={inputRef}
+                required
+                type="text"
+                name="name"
+                {...formik.getFieldProps('name')}
+                isInvalid={formik.errors.name && formik.touched.name}
+              />
+              <Form.Control.Feedback type="invalid">{formik.errors.name}</Form.Control.Feedback>
             </Form.Group>
-            <Button variant='secondary' onClick={onHide}>{t('modals.buttons.cancel')}</Button>
-            <Button variant='primary' type='submit'>{t('modals.buttons.submit')}</Button>
+            <Button variant="secondary" onClick={onHide}>{t('modals.buttons.cancel')}</Button>
+            <Button variant="primary" type="submit">{t('modals.buttons.submit')}</Button>
           </fieldset>
         </Form>
       </Modal.Body>

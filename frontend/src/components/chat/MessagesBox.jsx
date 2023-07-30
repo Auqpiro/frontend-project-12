@@ -1,5 +1,5 @@
-import { useSelector } from "react-redux";
-import { useTranslation } from "react-i18next";
+import { useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { channelsSelectors } from '../../slices/channelsSlice.js';
 import { messagesSelectors } from '../../slices/messagesSlice.js';
 
@@ -14,10 +14,16 @@ const MessagesBox = () => {
     .filter(({ channelId }) => channelId === currentChannelId);
   return (
     <>
-      <p><b># {nameCurrentChannel}</b></p><span>{t('messages.counter.count', { count: messages.length })}</span>
+      <p>
+        <b>
+          {`# ${nameCurrentChannel}`}
+        </b>
+      </p>
+      <span>{t('messages.counter.count', { count: messages.length })}</span>
       {messages.map(({ username, body, id }) => (
         <p key={id}>
-          <b>{username}: </b><span>{body}</span>
+          <b>{`${username}: `}</b>
+          <span>{body}</span>
         </p>
       ))}
     </>

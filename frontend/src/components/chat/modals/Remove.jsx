@@ -1,9 +1,8 @@
-import { useFormik } from "formik";
-import { useTranslation } from "react-i18next";
-import { useSocket, useAutoFocus } from '../../../hooks/index.js';
+import { useFormik } from 'formik';
+import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
-import { Button, Form, Modal } from "react-bootstrap";
-
+import { Button, Form, Modal } from 'react-bootstrap';
+import { useSocket, useAutoFocus } from '../../../hooks/index.js';
 
 const Remove = ({ item, onHide }) => {
   const { t } = useTranslation();
@@ -32,8 +31,8 @@ const Remove = ({ item, onHide }) => {
         <p>{t('modals.concern')}</p>
         <Form onSubmit={formik.handleSubmit}>
           <fieldset disabled={formik.isSubmitting}>
-            <Button variant='secondary' onClick={onHide}>{t('modals.buttons.cancel')}</Button>
-            <Button variant='danger' type='submit' ref={btnRef}>{t('modals.buttons.delete')}</Button>
+            <Button variant="secondary" onClick={onHide}>{t('modals.buttons.cancel')}</Button>
+            <Button variant="danger" type="submit" ref={btnRef}>{t('modals.buttons.delete')}</Button>
           </fieldset>
         </Form>
       </Modal.Body>

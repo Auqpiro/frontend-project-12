@@ -3,9 +3,17 @@ import { useFormik } from 'formik';
 import { useState } from 'react';
 import { useLocation, useNavigate, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { useAuth, useAutoFocus } from '../hooks/index.js';
 import { toast } from 'react-toastify';
-import { Card, Form, Button, FloatingLabel, Container, Row, Col } from 'react-bootstrap';
+import {
+  Card,
+  Form,
+  Button,
+  FloatingLabel,
+  Container,
+  Row,
+  Col,
+} from 'react-bootstrap';
+import { useAuth, useAutoFocus } from '../hooks/index.js';
 import routes from '../routes.js';
 
 const Login = () => {
@@ -49,42 +57,42 @@ const Login = () => {
                 <fieldset disabled={formik.isSubmitting}>
                   <h1>{t('signin.header')}</h1>
                   <FloatingLabel
-                    controlId='username'
+                    controlId="username"
                     label={t('signin.username')}
                   >
                     <Form.Control
                       ref={inputRef}
                       required
-                      type='text'
-                      name='username'
-                      autoComplete='username'
+                      type="text"
+                      name="username"
+                      autoComplete="username"
                       placeholder={t('signin.username')}
                       {...formik.getFieldProps('username')}
                       isInvalid={authFailed}
                     />
                   </FloatingLabel>
                   <FloatingLabel
-                    controlId='password'
+                    controlId="password"
                     label={t('signin.password')}
                   >
                     <Form.Control
                       required
-                      type='password'
-                      name='password'
-                      autoComplete='current-password'
+                      type="password"
+                      name="password"
+                      autoComplete="current-password"
                       placeholder={t('signin.password')}
                       {...formik.getFieldProps('password')}
                       isInvalid={authFailed}
                     />
-                    {authFailed ? <div className='invalid-tooltip'>{t('signin.error')}</div> : null}
+                    {authFailed ? <div className="invalid-tooltip">{t('signin.error')}</div> : null}
                   </FloatingLabel>
-                  <Button type='submit'>{t('signin.submit')}</Button>
+                  <Button type="submit">{t('signin.submit')}</Button>
                 </fieldset>
               </Form>
             </Card.Body>
             <Card.Footer>
               <span>{t('signin.footer.message')}</span>
-              <Link to='/signup' state={{ from }}>{t('signin.footer.link')}</Link>
+              <Link to="/signup" state={{ from }}>{t('signin.footer.link')}</Link>
             </Card.Footer>
           </Card>
         </Col>

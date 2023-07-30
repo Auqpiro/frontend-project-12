@@ -1,12 +1,12 @@
 import * as yup from 'yup';
 import * as filter from 'leo-profanity';
 import { useEffect, useRef } from 'react';
-import { useSelector } from "react-redux";
-import { useFormik } from "formik";
-import { useSocket } from '../../hooks/index.js';
-import { useTranslation } from "react-i18next";
+import { useSelector } from 'react-redux';
+import { useFormik } from 'formik';
+import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
-import { Form, Button, InputGroup } from "react-bootstrap";
+import { Form, Button, InputGroup } from 'react-bootstrap';
+import { useSocket } from '../../hooks/index.js';
 
 const MessageInput = () => {
   const { t } = useTranslation();
@@ -46,13 +46,13 @@ const MessageInput = () => {
           <Form.Control
             ref={inputRef}
             required
-            type='text'
-            name='body'
-            aria-label='Новое сообщение'
+            type="text"
+            name="body"
+            aria-label="Новое сообщение"
             placeholder={t('messages.label')}
             {...formik.getFieldProps('body')}
           />
-          <Button type='submit' disabled={!formik.isValid}>{t('messages.send')}</Button>
+          <Button type="submit" disabled={!formik.isValid}>{t('messages.send')}</Button>
         </InputGroup>
       </fieldset>
     </Form>

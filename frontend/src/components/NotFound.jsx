@@ -1,4 +1,4 @@
-import { useTranslation } from "react-i18next";
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
 const NotFound = () => {
@@ -7,7 +7,7 @@ const NotFound = () => {
     <>
       <h1>{t('notFound.header')}</h1>
       <span>{t('notFound.message')}</span>
-      <Link to='/'>{t('notFound.link')}</Link>
+      <Link to="/">{t('notFound.link')}</Link>
     </>
   );
 };

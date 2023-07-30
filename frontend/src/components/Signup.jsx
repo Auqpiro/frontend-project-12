@@ -4,9 +4,17 @@ import { useFormik } from 'formik';
 import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { useAuth, useAutoFocus } from '../hooks/index.js';
 import { toast } from 'react-toastify';
-import { Card, Form, Button, FloatingLabel, Container, Row, Col } from 'react-bootstrap';
+import {
+  Card,
+  Form,
+  Button,
+  FloatingLabel,
+  Container,
+  Row,
+  Col,
+} from 'react-bootstrap';
+import { useAuth, useAutoFocus } from '../hooks/index.js';
 import routes from '../routes.js';
 
 const Signup = () => {
@@ -17,7 +25,7 @@ const Signup = () => {
   const location = useLocation();
   const { from } = location.state;
   const navigate = useNavigate();
-  const formik = useFormik({
+  const f = useFormik({
     initialValues: {
       username: '',
       password: '',
@@ -47,7 +55,7 @@ const Signup = () => {
         auth.logIn();
         navigate(from);
       } catch (err) {
-        formik.setSubmitting(false);
+        f.setSubmitting(false);
         if (err.isAxiosError && err.response.status === 409) {
           setRegistryFailed(true);
         } else {
@@ -64,62 +72,66 @@ const Signup = () => {
           <Card>
             <Card.Body>
               <h1>{t('signup.header')}</h1>
-              <Form onSubmit={formik.handleSubmit}>
-                <fieldset disabled={formik.isSubmitting}>
+              <Form onSubmit={f.handleSubmit}>
+                <fieldset disabled={f.isSubmitting}>
                   <FloatingLabel
-                    controlId='username'
+                    controlId="username"
                     label={t('signup.username')}
                   >
                     <Form.Control
                       ref={inputRef}
                       required
-                      type='text'
-                      name='username'
-                      autoComplete='username'
+                      type="text"
+                      name="username"
+                      autoComplete="username"
                       placeholder={t('signup.rules.username')}
-                      {...formik.getFieldProps('username')}
-                      isInvalid={(formik.touched.username && formik.errors.username) || registryFailed}
+                      {...f.getFieldProps('username')}
+                      isInvalid={(f.touched.username && f.errors.username) || registryFailed}
                     />
-                    {formik.touched.username && formik.errors.username ? (
-                      <div className='invalid-tooltip'>{formik.errors.username}</div>
-                    ): null}
+                    {f.touched.username && f.errors.username
+                      ? (<div className="invalid-tooltip">{f.errors.username}</div>)
+                      : null}
                   </FloatingLabel>
                   <FloatingLabel
-                    controlId='password'
+                    controlId="password"
                     label={t('signup.password')}
                   >
                     <Form.Control
                       required
-                      type='password'
-                      name='password'
-                      autoComplete='new-password'
+                      type="password"
+                      name="password"
+                      autoComplete="new-password"
                       placeholder={t('signup.rules.password')}
-                      {...formik.getFieldProps('password')}
-                      isInvalid={(formik.touched.password && formik.errors.password) || registryFailed}
+                      {...f.getFieldProps('password')}
+                      isInvalid={(f.touched.password && f.errors.password) || registryFailed}
                     />
-                    {formik.touched.password && formik.errors.password ? (
-                      <div className='invalid-tooltip'>{formik.errors.password}</div>
-                    ): null}
+                    {f.touched.password && f.errors.password
+                      ? (<div className="invalid-tooltip">{f.errors.password}</div>)
+                      : null}
                   </FloatingLabel>
                   <FloatingLabel
-                    controlId='confirmPassword'
+                    controlId="confirmPassword"
                     label={t('signup.confirmPassword')}
                   >
                     <Form.Control
                       required
-                      type='password'
-                      name='confirmPassword'
-                      autoComplete='new-password'
+                      type="password"
+                      name="confirmPassword"
+                      autoComplete="new-password"
                       placeholder={t('signup.rules.confirmPassword')}
-                      {...formik.getFieldProps('confirmPassword')}
-                      isInvalid={(formik.touched.confirmPassword && formik.errors.confirmPassword) || registryFailed}
+                      {...f.getFieldProps('confirmPassword')}
+                      isInvalid={
+                        (f.touched.confirmPassword && f.errors.confirmPassword) || registryFailed
+                      }
                     />
-                    {formik.touched.confirmPassword && formik.errors.confirmPassword ? (
-                      <div className='invalid-tooltip'>{formik.errors.confirmPassword}</div>
-                    ): null}
-                    {registryFailed ? <div className='invalid-tooltip'>{t('signup.error')}</div> : null}
+                    {f.touched.confirmPassword && f.errors.confirmPassword
+                      ? (<div className="invalid-tooltip">{f.errors.confirmPassword}</div>)
+                      : null}
+                    {registryFailed
+                      ? (<div className="invalid-tooltip">{t('signup.error')}</div>)
+                      : null}
                   </FloatingLabel>
-                  <Button type='submit'>{t('signup.submit')}</Button>
+                  <Button type="submit">{t('signup.submit')}</Button>
                 </fieldset>
               </Form>
             </Card.Body>

@@ -1,11 +1,11 @@
 import axios from 'axios';
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { useTranslation } from "react-i18next";
+import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
+import { Spinner } from 'react-bootstrap';
 import { channelsActions } from '../../slices/channelsSlice.js';
 import { messagesActions } from '../../slices/messagesSlice.js';
-import { Spinner } from 'react-bootstrap';
 import ChannelsBox from './ChannelsBox.jsx';
 import routes from '../../routes.js';
 
@@ -36,7 +36,7 @@ const Main = () => {
   }, [dispatch, t]);
   return (
     isLoading
-      ? <Spinner animation='border' />
+      ? <Spinner animation="border" />
       : <ChannelsBox />
   );
 };

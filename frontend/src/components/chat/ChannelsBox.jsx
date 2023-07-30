@@ -1,9 +1,17 @@
-import { useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { useTranslation } from "react-i18next";
-import getModal from "./modals/index.js";
+import { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
+import {
+  Container,
+  Row,
+  Col,
+  Nav,
+  Dropdown,
+  ButtonGroup,
+  Button,
+} from 'react-bootstrap';
+import getModal from './modals/index.js';
 import { channelsSelectors, channelsActions } from '../../slices/channelsSlice.js';
-import { Container, Row, Col, Nav, Dropdown, ButtonGroup, Button } from 'react-bootstrap';
 import MessagesBox from './MessagesBox.jsx';
 import MessageInput from './MessageInput.jsx';
 
@@ -35,19 +43,38 @@ const ChannelsBox = () => {
               variant="pills"
             >
               {channels.map(({ id, name, removable }) => (
-                <Nav.Item  key={id}>
+                <Nav.Item key={id}>
                   {removable
-                    ?
-                    <Dropdown as={ButtonGroup}>
-                      <Button variant={(id === currentChannelId ? 'primary' : null)} onClick={() => selectCurrentChannel(id)}># {name}</Button>
-                      <Dropdown.Toggle variant={(id === currentChannelId ? 'primary' : null)} split />
-                      <Dropdown.Menu>
-                        <Dropdown.Item onClick={() => showModal('renaming', { id, name })}>{t('channels.dropdown.rename')}</Dropdown.Item>
-                        <Dropdown.Item onClick={() => showModal('removing', { id })}>{t('channels.dropdown.remove')}</Dropdown.Item>
-                      </Dropdown.Menu>
-                    </Dropdown>
-                    : <Button variant={(id === currentChannelId ? 'primary' : null)} onClick={() => selectCurrentChannel(id)}># {name}</Button>
-                  }
+                    ? (
+                      <Dropdown as={ButtonGroup}>
+                        <Button
+                          variant={id === currentChannelId
+                            ? 'primary'
+                            : null}
+                          onClick={() => selectCurrentChannel(id)}
+                        >
+                          {`# ${name}`}
+                        </Button>
+                        <Dropdown.Toggle
+                          split
+                          variant={id === currentChannelId
+                            ? 'primary'
+                            : null}
+                        />
+                        <Dropdown.Menu>
+                          <Dropdown.Item onClick={() => showModal('renaming', { id, name })}>{t('channels.dropdown.rename')}</Dropdown.Item>
+                          <Dropdown.Item onClick={() => showModal('removing', { id })}>{t('channels.dropdown.remove')}</Dropdown.Item>
+                        </Dropdown.Menu>
+                      </Dropdown>
+                    )
+                    : (
+                      <Button
+                        variant={(id === currentChannelId ? 'primary' : null)}
+                        onClick={() => selectCurrentChannel(id)}
+                      >
+                        {`# ${name}`}
+                      </Button>
+                    )}
                 </Nav.Item>
               ))}
             </Nav>
