@@ -1,5 +1,10 @@
 import { Provider, ErrorBoundary } from '@rollbar/react';
 
+function TestError() {
+  const a = null;
+  return a.hello();
+}
+
 const CollectorProvider = ({ children }) => {
   const rollbarConfig = {
     accessToken: process.env.ROLLBAR_ACCESS_TOKEN,
@@ -10,7 +15,7 @@ const CollectorProvider = ({ children }) => {
   return (
     <Provider config={rollbarConfig}>
       <ErrorBoundary>
-        {children}
+        <TestError />
       </ErrorBoundary>
     </Provider>
   );
