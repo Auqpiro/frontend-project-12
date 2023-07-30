@@ -54,7 +54,9 @@ const Rename = ({ item, onHide }) => {
                 required
                 type="text"
                 name="name"
-                {...formik.getFieldProps('name')}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.name}
                 isInvalid={formik.errors.name && formik.touched.name}
               />
               <Form.Control.Feedback type="invalid">{formik.errors.name}</Form.Control.Feedback>

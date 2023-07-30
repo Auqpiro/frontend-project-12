@@ -67,7 +67,9 @@ const Login = () => {
                       name="username"
                       autoComplete="username"
                       placeholder={t('signin.username')}
-                      {...formik.getFieldProps('username')}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      value={formik.values.username}
                       isInvalid={authFailed}
                     />
                   </FloatingLabel>
@@ -81,7 +83,9 @@ const Login = () => {
                       name="password"
                       autoComplete="current-password"
                       placeholder={t('signin.password')}
-                      {...formik.getFieldProps('password')}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      value={formik.values.password}
                       isInvalid={authFailed}
                     />
                     {authFailed ? <div className="invalid-tooltip">{t('signin.error')}</div> : null}

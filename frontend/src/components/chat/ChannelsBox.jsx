@@ -61,7 +61,7 @@ const ChannelsBox = () => {
                             ? 'primary'
                             : null}
                         >
-                          <span class="visually-hidden">Управление каналом</span>
+                          <span className="visually-hidden">Управление каналом</span>
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
                           <Dropdown.Item onClick={() => showModal('renaming', { id, name })}>{t('channels.dropdown.rename')}</Dropdown.Item>

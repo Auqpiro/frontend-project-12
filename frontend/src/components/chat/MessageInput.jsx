@@ -50,7 +50,9 @@ const MessageInput = () => {
             name="body"
             aria-label="Новое сообщение"
             placeholder={t('messages.label')}
-            {...formik.getFieldProps('body')}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            value={formik.values.body}
           />
           <Button type="submit" disabled={!formik.isValid}>{t('messages.send')}</Button>
         </InputGroup>

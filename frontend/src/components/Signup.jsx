@@ -85,7 +85,9 @@ const Signup = () => {
                       name="username"
                       autoComplete="username"
                       placeholder={t('signup.rules.username')}
-                      {...f.getFieldProps('username')}
+                      onChange={f.handleChange}
+                      onBlur={f.handleBlur}
+                      value={f.values.username}
                       isInvalid={(f.touched.username && f.errors.username) || registryFailed}
                     />
                     {f.touched.username && f.errors.username
@@ -102,7 +104,9 @@ const Signup = () => {
                       name="password"
                       autoComplete="new-password"
                       placeholder={t('signup.rules.password')}
-                      {...f.getFieldProps('password')}
+                      onChange={f.handleChange}
+                      onBlur={f.handleBlur}
+                      value={f.values.password}
                       isInvalid={(f.touched.password && f.errors.password) || registryFailed}
                     />
                     {f.touched.password && f.errors.password
@@ -119,7 +123,9 @@ const Signup = () => {
                       name="confirmPassword"
                       autoComplete="new-password"
                       placeholder={t('signup.rules.confirmPassword')}
-                      {...f.getFieldProps('confirmPassword')}
+                      onChange={f.handleChange}
+                      onBlur={f.handleBlur}
+                      value={f.values.confirmPassword}
                       isInvalid={
                         (f.touched.confirmPassword && f.errors.confirmPassword) || registryFailed
                       }
