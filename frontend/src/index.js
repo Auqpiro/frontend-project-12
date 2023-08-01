@@ -1,14 +1,14 @@
 import ReactDOM from 'react-dom/client';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import { injectStyle } from 'react-toastify/dist/inject-style';
-import init from './init';
+import { ToastContainer } from 'react-toastify';
+import './style.css';
+import MainProvider from './providers/index.jsx';
+import App from './components/App.jsx';
 
-const app = async () => {
-  const root = ReactDOM.createRoot(document.getElementById('root'));
-  const vdom = await init();
-  root.render(vdom);
-};
-
-injectStyle();
-
-app();
+const root = ReactDOM.createRoot(document.getElementById('root'));
+const vdom = (
+  <MainProvider>
+    <App />
+    <ToastContainer />
+  </MainProvider>
+);
+root.render(vdom);

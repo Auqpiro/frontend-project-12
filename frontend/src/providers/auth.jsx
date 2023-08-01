@@ -1,16 +1,21 @@
 import { useState } from 'react';
 import { AuthContext } from '../context/index.js';
+import { useLocalStorage } from '../hooks/index.js';
 
 const AuthProvider = ({ children }) => {
-  const userId = JSON.parse(localStorage.getItem('userId'));
-  const [loggedIn, setLoggedIn] = useState(!!userId);
+  const { item, setItem, removeItem } = useLocalStorage('userId');
+  const [loggedIn, setLoggedIn] = useState(!!item);
   const auth = {
     loggedIn,
-    logIn: () => setLoggedIn(true),
+    logIn: (data) => {
+      setItem(JSON.stringify(data));
+      setLoggedIn(true);
+    },
     logOut: () => {
-      localStorage.removeItem('userId');
+      removeItem();
       setLoggedIn(false);
     },
+    getUser: () => (loggedIn ? JSON.parse(item) : null),
   };
   return (
     <AuthContext.Provider value={auth}>

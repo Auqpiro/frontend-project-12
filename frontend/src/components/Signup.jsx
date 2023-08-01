@@ -15,7 +15,7 @@ import {
   Col,
 } from 'react-bootstrap';
 import { useAuth, useAutoFocus } from '../hooks/index.js';
-import routes from '../routes.js';
+import routes from '../utils/routes.js';
 
 const Signup = () => {
   const { t } = useTranslation();
@@ -23,7 +23,7 @@ const Signup = () => {
   const [registryFailed, setRegistryFailed] = useState(false);
   const inputRef = useAutoFocus();
   const location = useLocation();
-  const { from } = location.state;
+  const { from } = location.state || { from: { pathname: '/' } };
   const navigate = useNavigate();
   const f = useFormik({
     initialValues: {
@@ -51,8 +51,7 @@ const Signup = () => {
       setRegistryFailed(false);
       try {
         const { data } = await axios.post(routes.createPath(), { username, password });
-        localStorage.setItem('userId', JSON.stringify(data));
-        auth.logIn();
+        auth.logIn(data);
         navigate(from);
       } catch (err) {
         f.setSubmitting(false);
@@ -66,15 +65,16 @@ const Signup = () => {
     },
   });
   return (
-    <Container>
-      <Row>
-        <Col>
-          <Card>
-            <Card.Body>
-              <h1>{t('signup.header')}</h1>
-              <Form onSubmit={f.handleSubmit}>
+    <Container fluid className="h-100">
+      <Row className="row justify-content-center align-content-center h-100">
+        <Col className="col-12 col-md-8 col-xxl-6">
+          <Card className="shadow-sm">
+            <Card.Body className="p-5">
+              <Form className="mt-3 mt-mb-0" onSubmit={f.handleSubmit}>
                 <fieldset disabled={f.isSubmitting}>
+                  <h1 className="text-center mb-4">{t('signup.header')}</h1>
                   <FloatingLabel
+                    className="mb-3"
                     controlId="username"
                     label={t('signup.username')}
                   >
@@ -95,6 +95,7 @@ const Signup = () => {
                       : null}
                   </FloatingLabel>
                   <FloatingLabel
+                    className="mb-3"
                     controlId="password"
                     label={t('signup.password')}
                   >
@@ -114,6 +115,7 @@ const Signup = () => {
                       : null}
                   </FloatingLabel>
                   <FloatingLabel
+                    className="mb-4"
                     controlId="confirmPassword"
                     label={t('signup.confirmPassword')}
                   >
@@ -137,7 +139,7 @@ const Signup = () => {
                       ? (<div className="invalid-tooltip">{t('signup.error')}</div>)
                       : null}
                   </FloatingLabel>
-                  <Button type="submit">{t('signup.submit')}</Button>
+                  <Button className="w-100 mb-3" variant="outline-primary" type="submit">{t('signup.submit')}</Button>
                 </fieldset>
               </Form>
             </Card.Body>

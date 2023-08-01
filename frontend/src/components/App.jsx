@@ -13,7 +13,7 @@ import {
   Button,
   Dropdown,
 } from 'react-bootstrap';
-import { useAuth } from '../hooks/index.js';
+import { useAuth, useLocalStorage } from '../hooks/index.js';
 import Main from './chat/index.jsx';
 import Login from './Login.jsx';
 import Signup from './Signup.jsx';
@@ -41,10 +41,14 @@ const AuthButton = () => {
 
 const LanguageToggle = () => {
   const { i18n } = useTranslation();
-  const handleSelect = (lng) => i18n.changeLanguage(lng);
+  const { setItem } = useLocalStorage('language');
+  const handleSelect = (lng) => {
+    i18n.changeLanguage(lng);
+    setItem(lng);
+  };
   const { languages } = i18n;
   return (
-    <Dropdown onSelect={handleSelect}>
+    <Dropdown onSelect={handleSelect} className="me-2">
       <Dropdown.Toggle>{i18n.language}</Dropdown.Toggle>
       <Dropdown.Menu>
         {languages.map((language) => (
@@ -58,28 +62,33 @@ const LanguageToggle = () => {
 const App = () => {
   const { t } = useTranslation();
   return (
-    <BrowserRouter>
-      <Navbar>
-        <Container>
-          <Navbar.Brand as={Link} to="/">{t('brand')}</Navbar.Brand>
-          <LanguageToggle />
-          <AuthButton />
-        </Container>
-      </Navbar>
-      <Routes>
-        <Route
-          path="/"
-          element={(
-            <PrivateRoute>
-              <Main />
-            </PrivateRoute>
-          )}
-        />
-        <Route path="login" element={<Login />} />
-        <Route path="signup" element={<Signup />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-    </BrowserRouter>
+    <div className="d-flex flex-column vh-100">
+      <BrowserRouter>
+        <Navbar className="shadow-sm" bg="white" expand="lg">
+          <Container>
+            <Navbar.Brand as={Link} to="/">{t('brand')}</Navbar.Brand>
+            <Navbar.Toggle />
+            <Navbar.Collapse className="justify-content-end">
+              <LanguageToggle />
+              <AuthButton />
+            </Navbar.Collapse>
+          </Container>
+        </Navbar>
+        <Routes>
+          <Route
+            path="/"
+            element={(
+              <PrivateRoute>
+                <Main />
+              </PrivateRoute>
+            )}
+          />
+          <Route path="login" element={<Login />} />
+          <Route path="signup" element={<Signup />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </BrowserRouter>
+    </div>
   );
 };
 

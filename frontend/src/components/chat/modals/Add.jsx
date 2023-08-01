@@ -40,7 +40,7 @@ const Add = ({ onHide }) => {
     },
   });
   return (
-    <Modal show>
+    <Modal show centered>
       <Modal.Header closeButton onHide={onHide}>
         <Modal.Title>{t('modals.headers.add')}</Modal.Title>
       </Modal.Header>
@@ -48,8 +48,9 @@ const Add = ({ onHide }) => {
         <Form onSubmit={formik.handleSubmit}>
           <fieldset disabled={formik.isSubmitting}>
             <Form.Group controlId="name">
-              <Form.Label className="visually-hidden">Имя канала</Form.Label>
+              <Form.Label visuallyHidden>Имя канала</Form.Label>
               <Form.Control
+                className="mb-2"
                 ref={inputRef}
                 required
                 type="text"
@@ -61,8 +62,10 @@ const Add = ({ onHide }) => {
               />
               <Form.Control.Feedback type="invalid">{formik.errors.name}</Form.Control.Feedback>
             </Form.Group>
-            <Button variant="secondary" onClick={onHide}>{t('modals.buttons.cancel')}</Button>
-            <Button variant="primary" type="submit">{t('modals.buttons.submit')}</Button>
+            <div className="d-flex justify-content-end">
+              <Button className="me-2" variant="secondary" onClick={onHide}>{t('modals.buttons.cancel')}</Button>
+              <Button variant="primary" type="submit">{t('modals.buttons.submit')}</Button>
+            </div>
           </fieldset>
         </Form>
       </Modal.Body>

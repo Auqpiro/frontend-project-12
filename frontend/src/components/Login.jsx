@@ -14,7 +14,7 @@ import {
   Col,
 } from 'react-bootstrap';
 import { useAuth, useAutoFocus } from '../hooks/index.js';
-import routes from '../routes.js';
+import routes from '../utils/routes.js';
 
 const Login = () => {
   const { t } = useTranslation();
@@ -22,7 +22,7 @@ const Login = () => {
   const auth = useAuth();
   const inputRef = useAutoFocus();
   const location = useLocation();
-  const { from } = location.state;
+  const { from } = location.state || { from: { pathname: '/' } };
   const navigate = useNavigate();
   const formik = useFormik({
     initialValues: {
@@ -33,8 +33,7 @@ const Login = () => {
       setAuthFailed(false);
       try {
         const { data } = await axios.post(routes.loginPath(), values);
-        localStorage.setItem('userId', JSON.stringify(data));
-        auth.logIn();
+        auth.logIn(data);
         navigate(from);
       } catch (err) {
         formik.setSubmitting(false);
@@ -48,15 +47,16 @@ const Login = () => {
     },
   });
   return (
-    <Container>
-      <Row>
-        <Col>
-          <Card>
-            <Card.Body>
-              <Form onSubmit={formik.handleSubmit}>
+    <Container className="container-fluid h-100">
+      <Row className="row justify-content-center align-content-center h-100">
+        <Col className="col-12 col-md-8 col-xxl-6 p-5">
+          <Card className="shadow-sm">
+            <Card.Body className="p-5">
+              <Form className="mt-3 mt-mb-0" onSubmit={formik.handleSubmit}>
                 <fieldset disabled={formik.isSubmitting}>
-                  <h1>{t('signin.header')}</h1>
+                  <h1 className="text-center mb-4">{t('signin.header')}</h1>
                   <FloatingLabel
+                    className="mb-3"
                     controlId="username"
                     label={t('signin.username')}
                   >
@@ -74,6 +74,7 @@ const Login = () => {
                     />
                   </FloatingLabel>
                   <FloatingLabel
+                    className="mb-4"
                     controlId="password"
                     label={t('signin.password')}
                   >
@@ -90,13 +91,15 @@ const Login = () => {
                     />
                     {authFailed ? <div className="invalid-tooltip">{t('signin.error')}</div> : null}
                   </FloatingLabel>
-                  <Button type="submit">{t('signin.submit')}</Button>
+                  <Button className="w-100 mb-3" variant="outline-primary" type="submit">{t('signin.submit')}</Button>
                 </fieldset>
               </Form>
             </Card.Body>
-            <Card.Footer>
-              <span>{t('signin.footer.message')}</span>
-              <Link to="/signup" state={{ from }}>{t('signin.footer.link')}</Link>
+            <Card.Footer className="p-4">
+              <div className="text-center">
+                <span>{t('signin.footer.message')}</span>
+                <Link to="/signup" state={{ from }}>{t('signin.footer.link')}</Link>
+              </div>
             </Card.Footer>
           </Card>
         </Col>

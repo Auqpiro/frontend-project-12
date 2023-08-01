@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { channelsSelectors } from '../../slices/channelsSlice.js';
@@ -12,20 +13,31 @@ const MessagesBox = () => {
   });
   const messages = useSelector(messagesSelectors.selectAll)
     .filter(({ channelId }) => channelId === currentChannelId);
+
+  const messagesRef = useRef(null);
+  useEffect(() => {
+    messagesRef.current
+      ?.lastElementChild
+      ?.scrollIntoView({ block: 'start', behavior: 'auto' });
+  }, [currentChannelId, messages]);
   return (
     <>
-      <p>
-        <b>
-          {`# ${nameCurrentChannel}`}
-        </b>
-      </p>
-      <span>{t('messages.counter.count', { count: messages.length })}</span>
-      {messages.map(({ username, body, id }) => (
-        <p key={id}>
-          <b>{`${username}: `}</b>
-          <span>{body}</span>
+      <div className="bg-light mb-4 p-3 shadow-sm small">
+        <p className="m-0">
+          <b>
+            {`# ${nameCurrentChannel}`}
+          </b>
         </p>
-      ))}
+        <span className="text-muted">{t('messages.counter.count', { count: messages.length })}</span>
+      </div>
+      <div ref={messagesRef} className="chat-messages overflow-auto px-5">
+        {messages.map(({ username, body, id }) => (
+          <div className="text-break mb-2" key={id}>
+            <b>{`${username}: `}</b>
+            <span>{body}</span>
+          </div>
+        ))}
+      </div>
     </>
   );
 };

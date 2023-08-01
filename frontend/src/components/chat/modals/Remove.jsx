@@ -23,15 +23,15 @@ const Remove = ({ item, onHide }) => {
     },
   });
   return (
-    <Modal show>
+    <Modal show centered>
       <Modal.Header closeButton onHide={onHide}>
         <Modal.Title>{t('modals.headers.remove')}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <p>{t('modals.concern')}</p>
+        <p className="lead">{t('modals.concern')}</p>
         <Form onSubmit={formik.handleSubmit}>
-          <fieldset disabled={formik.isSubmitting}>
-            <Button variant="secondary" onClick={onHide}>{t('modals.buttons.cancel')}</Button>
+          <fieldset className="d-flex justify-content-end" disabled={formik.isSubmitting}>
+            <Button className="me-2" variant="secondary" onClick={onHide}>{t('modals.buttons.cancel')}</Button>
             <Button variant="danger" type="submit" ref={btnRef}>{t('modals.buttons.delete')}</Button>
           </fieldset>
         </Form>

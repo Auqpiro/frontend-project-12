@@ -4,11 +4,11 @@ import { Link } from 'react-router-dom';
 const NotFound = () => {
   const { t } = useTranslation();
   return (
-    <>
-      <h1>{t('notFound.header')}</h1>
-      <span>{t('notFound.message')}</span>
+    <div className="text-center p-5 mt-5">
+      <h1 className="h4 text-muted p-5 mt-5">{t('notFound.header')}</h1>
+      <span className="text-muted">{t('notFound.message')}</span>
       <Link to="/">{t('notFound.link')}</Link>
-    </>
+    </div>
   );
 };
 
