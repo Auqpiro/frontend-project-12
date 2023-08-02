@@ -1,9 +1,10 @@
 import { Provider } from 'react-redux';
+import store from '../slices/index.js';
 import CollectorProvider from './collector.jsx';
 import SocketProvider from './soket.jsx';
 import AuthProvider from './auth.jsx';
 import I18nProvider from './i18n.jsx';
-import store from '../slices/index.js';
+import ThemeProvider from './theme.jsx';
 
 const MainProvider = ({ children }) => (
   <CollectorProvider>
@@ -11,7 +12,9 @@ const MainProvider = ({ children }) => (
       <SocketProvider>
         <I18nProvider>
           <AuthProvider>
-            { children }
+            <ThemeProvider>
+              { children }
+            </ThemeProvider>
           </AuthProvider>
         </I18nProvider>
       </SocketProvider>

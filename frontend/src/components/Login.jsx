@@ -49,7 +49,7 @@ const Login = () => {
   return (
     <Container className="container-fluid h-100">
       <Row className="row justify-content-center align-content-center h-100">
-        <Col className="col-12 col-md-8 col-xxl-6 p-5">
+        <Col className="col-12 col-md-8 col-xxl-6">
           <Card className="shadow-sm">
             <Card.Body className="p-5">
               <Form className="mt-3 mt-mb-0" onSubmit={formik.handleSubmit}>

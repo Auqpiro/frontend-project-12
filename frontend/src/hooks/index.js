@@ -4,11 +4,13 @@ import {
   useRef,
   useState,
 } from 'react';
-import { AuthContext, SocketContext } from '../context/index.js';
+import { AuthContext, SocketContext, ThemeContext } from '../context/index.js';
 
 const useAuth = () => useContext(AuthContext);
 
 const useSocket = () => useContext(SocketContext);
+
+const useTheme = () => useContext(ThemeContext);
 
 const useAutoFocus = () => {
   const ref = useRef(null);
@@ -38,6 +40,7 @@ const useLocalStorage = (key, value = null) => {
 export {
   useAuth,
   useSocket,
+  useTheme,
   useAutoFocus,
   useLocalStorage,
 };
