@@ -13,7 +13,7 @@ const I18nProvider = ({ children }) => {
     resources,
     lng: defaultLanguage,
     fallbackLng: ['ru', 'en', 'zh', 'es'],
-    debug: true,
+    debug: false,
     interpolation: {
       escapeValue: false,
     },

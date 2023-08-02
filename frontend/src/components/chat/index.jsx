@@ -16,26 +16,23 @@ const Main = () => {
   const auth = useAuth();
   const [isLoading, setLoading] = useState(true);
   useEffect(() => {
-    const fetchData = async () => {
-      const { token } = auth.getUser();
-      const { data } = await axios.get(routes.dataPath(), {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+    const { token } = auth.getUser();
+    axios.get(routes.dataPath(), {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then(({ data }) => {
+        const { channels, messages, currentChannelId } = data;
+        dispatch(channelsActions.setDefaultChannel(currentChannelId));
+        dispatch(channelsActions.fetchChannels(channels));
+        dispatch(messagesActions.fetchMessages(messages));
+        setLoading(false);
+      })
+      .catch(() => {
+        auth.logOut();
+        toast.error(t('toast.network'));
       });
-      const { channels, messages, currentChannelId } = data;
-      dispatch(channelsActions.setDefaultChannel(currentChannelId));
-      dispatch(channelsActions.fetchChannels(channels));
-      dispatch(messagesActions.fetchMessages(messages));
-      setLoading(false);
-    };
-    try {
-      fetchData();
-    } catch (err) {
-      auth.logOut();
-      toast.error(t('toast.network'));
-      throw err;
-    }
   }, [dispatch, t, auth]);
   return (
     isLoading

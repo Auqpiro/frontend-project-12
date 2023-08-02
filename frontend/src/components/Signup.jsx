@@ -49,19 +49,19 @@ const Signup = () => {
     }),
     onSubmit: async ({ username, password }) => {
       setRegistryFailed(false);
-      try {
-        const { data } = await axios.post(routes.createPath(), { username, password });
-        auth.logIn(data);
-        navigate(from);
-      } catch (err) {
-        f.setSubmitting(false);
-        if (err.isAxiosError && err.response.status === 409) {
-          setRegistryFailed(true);
-        } else {
-          toast.error(t('toast.network'));
-        }
-        throw err;
-      }
+      axios.post(routes.createPath(), { username, password })
+        .then(({ data }) => {
+          auth.logIn(data);
+          navigate(from);
+        })
+        .catch((err) => {
+          f.setSubmitting(false);
+          if (err.isAxiosError && err.response.status === 409) {
+            setRegistryFailed(true);
+          } else {
+            toast.error(t('toast.network'));
+          }
+        });
     },
   });
   return (

@@ -70,7 +70,7 @@ const Navheader = () => {
   return (
     <Navbar className="shadow-sm" expand="lg">
       <Container>
-        <Navbar.Brand className="mt-2 mb-1 h1" as={Link} to="/">
+        <Navbar.Brand className="mt-2 mb-1">
           <Navbar.Toggle className="me-2 mb-1 py-1 px-1">
             <svg
               viewBox="0 0 20 20"
@@ -89,7 +89,17 @@ const Navheader = () => {
               </g>
             </svg>
           </Navbar.Toggle>
-          {t('brand')}
+          <Link
+            style={{
+              textDecoration: 'none',
+              color: 'currentcolor',
+              verticalAlign: 'middle',
+              fontSize: '1.5rem',
+            }}
+            to="/"
+          >
+            {t('brand')}
+          </Link>
         </Navbar.Brand>
         <Navbar.Collapse>
           <Nav onSelect={handleSelect}>

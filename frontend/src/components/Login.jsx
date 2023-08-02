@@ -31,19 +31,19 @@ const Login = () => {
     },
     onSubmit: async (values) => {
       setAuthFailed(false);
-      try {
-        const { data } = await axios.post(routes.loginPath(), values);
-        auth.logIn(data);
-        navigate(from);
-      } catch (err) {
-        formik.setSubmitting(false);
-        if (err.isAxiosError && err.response.status === 401) {
-          setAuthFailed(true);
-        } else {
-          toast.error(t('toast.network'));
-        }
-        throw err;
-      }
+      axios.post(routes.loginPath(), values)
+        .then(({ data }) => {
+          auth.logIn(data);
+          navigate(from);
+        })
+        .catch((err) => {
+          formik.setSubmitting(false);
+          if (err.isAxiosError && err.response.status === 401) {
+            setAuthFailed(true);
+          } else {
+            toast.error(t('toast.network'));
+          }
+        });
     },
   });
   return (
