@@ -14,7 +14,7 @@ const ThemeToggle = () => {
   return (
     theme.name === 'dark'
       ? (
-        <Button className="me-3 p-1 rounded-circle" onClick={lightOn}>
+        <Button className="me-2 p-1 rounded-circle" onClick={lightOn}>
           <svg
             fill="none"
             stroke="currentColor"
@@ -31,7 +31,7 @@ const ThemeToggle = () => {
         </Button>
       )
       : (
-        <Button className="me-3 p-1 rounded-circle" onClick={lightOff}>
+        <Button className="me-2 p-1 rounded-circle" onClick={lightOff}>
           <svg
             fill="none"
             stroke="currentColor"
@@ -54,7 +54,7 @@ const AuthButton = () => {
   const { t } = useTranslation();
   return (
     auth.loggedIn
-      ? <Button onClick={auth.logOut}>{t('logout')}</Button>
+      ? <Button className="py-1" onClick={auth.logOut}>{t('logout')}</Button>
       : null
   );
 };
@@ -70,14 +70,33 @@ const Navheader = () => {
   return (
     <Navbar className="shadow-sm" expand="lg">
       <Container>
-        <Navbar.Brand as={Link} to="/">{t('brand')}</Navbar.Brand>
-        <Navbar.Toggle />
-        <Navbar.Collapse className="justify-content-end">
+        <Navbar.Brand className="mt-2 mb-1 h1" as={Link} to="/">
+          <Navbar.Toggle className="me-2 mb-1 py-1 px-1">
+            <svg
+              viewBox="0 0 20 20"
+              fill="none"
+              height="28"
+              width="28"
+            >
+              <g
+                fill="none"
+                fillRule="evenodd"
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M4.5 6.5h12M4.498 10.5h11.997M4.5 14.5h11.995" />
+              </g>
+            </svg>
+          </Navbar.Toggle>
+          {t('brand')}
+        </Navbar.Brand>
+        <Navbar.Collapse>
           <Nav onSelect={handleSelect}>
             <Nav.Item>
               <ThemeToggle />
             </Nav.Item>
-            <NavDropdown title={i18n.language.toUpperCase()} className="me-3">
+            <NavDropdown title={i18n.language.toUpperCase()} className="me-2">
               {languages.map((language) => (
                 <NavDropdown.Item
                   key={language}
@@ -87,11 +106,9 @@ const Navheader = () => {
                 </NavDropdown.Item>
               ))}
             </NavDropdown>
-            <Nav.Item>
-              <AuthButton />
-            </Nav.Item>
           </Nav>
         </Navbar.Collapse>
+        <AuthButton />
       </Container>
     </Navbar>
   );

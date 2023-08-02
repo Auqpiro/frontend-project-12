@@ -14,6 +14,8 @@ Chat is a simplified version of Slack Chat (Real-time React/Redux app) that incl
 - Creating, deleting and renaming channels
 - Bad word filtering
 - Pop-up notifications
+- Internationalization of Russian English Chinese and Spanish is supported
+- Light and dark theme of interface
 
 ### Setup
 ```bash
@@ -21,7 +23,7 @@ git clone git@github.com:Auqpiro/frontend-project-12.git
 make install
 ```
 
-### Use case in local environment
+### Use case in development
 
 Running EsLint
 ```bash
@@ -43,7 +45,7 @@ To deploy to any PaaS use the build and start commands
 make build
 make start
 ```
-Project uses [Rollbar](https://rollbar.com/) environment variable. Use this in your deployment
+Project uses [Rollbar](https://rollbar.com/) environment variable. Set this in your deployment
 ```bash
 REACT_APP_ROLLBAR_ACCESS_TOKEN
 ```

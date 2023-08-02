@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useCallback, useMemo } from 'react';
+import { ToastContainer } from 'react-toastify';
 import { ThemeContext } from '../context';
 import { useLocalStorage } from '../hooks';
 
@@ -16,24 +17,25 @@ const ThemeProvider = ({ children }) => {
   const { item: current, setItem } = useLocalStorage('theme', (isDarkPrefer ? 'dark' : 'light'));
   document.documentElement.setAttribute('data-bs-theme', current);
   const [theme, setTheme] = useState(themes[current]);
-  const lightOn = () => {
+  const lightOn = useCallback(() => {
     document.documentElement.setAttribute('data-bs-theme', 'light');
     setTheme(themes.light);
     setItem('light');
-  };
-  const lightOff = () => {
+  }, [setItem]);
+  const lightOff = useCallback(() => {
     document.documentElement.setAttribute('data-bs-theme', 'dark');
     setTheme(themes.dark);
     setItem('dark');
-  };
-  const decor = {
+  }, [setItem]);
+  const decor = useMemo(() => ({
     theme,
     lightOn,
     lightOff,
-  };
+  }), [theme, lightOn, lightOff]);
   return (
     <ThemeContext.Provider value={decor}>
       {children}
+      <ToastContainer theme={theme.name} />
     </ThemeContext.Provider>
   );
 };
