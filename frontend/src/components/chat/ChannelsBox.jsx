@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import {
@@ -21,6 +21,14 @@ const ChannelsBox = () => {
   const currentChannelId = useSelector((state) => state.channelsReducer.currentChannelId);
   const selectCurrentChannel = (id) => dispatch(channelsActions.selectCurrentChannel(Number(id)));
   const channels = useSelector(channelsSelectors.selectAll);
+
+  const channelsRef = useRef(null);
+  useEffect(() => {
+    channelsRef.current
+      ?.querySelector('.btn-primary')
+      ?.scrollIntoView();
+  }, [channels]);
+
   const [modalInfo, setModalInfo] = useState({
     type: null,
     item: null,
@@ -51,9 +59,10 @@ const ChannelsBox = () => {
               </Button>
             </div>
             <Nav
+              ref={channelsRef}
               fill
               variant="pills"
-              className="flex-column px-2 mb-3 h-100 d-block"
+              className="flex-column px-2 overflow-auto mb-3 h-100 d-block"
             >
               {channels.map(({ id, name, removable }) => (
                 <Nav.Item className="w-100" key={id}>

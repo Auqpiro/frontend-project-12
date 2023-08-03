@@ -8,4 +8,4 @@ start:
 	npm run dev
 
 lint:
-	npx --prefix frontend eslint .
+	cd frontend && npx eslint .
