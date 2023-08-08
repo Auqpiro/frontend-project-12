@@ -12,9 +12,8 @@ const themes = {
   },
 };
 
-const ThemeProvider = ({ children }) => {
-  const isDarkPrefer = window.matchMedia('(prefers-color-scheme: dark)').matches;
-  const { item: current, setItem } = useLocalStorage('theme', (isDarkPrefer ? 'dark' : 'light'));
+const ThemeProvider = ({ preferTheme, children }) => {
+  const { item: current, setItem } = useLocalStorage('theme', preferTheme);
   useEffect(() => {
     document.documentElement.setAttribute('data-bs-theme', current);
   }, [current]);

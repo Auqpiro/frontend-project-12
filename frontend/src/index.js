@@ -1,12 +1,13 @@
 import ReactDOM from 'react-dom/client';
+import { io } from 'socket.io-client';
 import './style.css';
-import MainProvider from './providers/index.jsx';
-import App from './components/App.jsx';
+import init from './init';
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-const vdom = (
-  <MainProvider>
-    <App />
-  </MainProvider>
-);
-root.render(vdom);
+const app = () => {
+  const root = ReactDOM.createRoot(document.getElementById('root'));
+  const socket = io();
+  const vdom = init(socket);
+  root.render(vdom);
+};
+
+app();
