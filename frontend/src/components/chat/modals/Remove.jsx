@@ -1,12 +1,17 @@
 import { useFormik } from 'formik';
+import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import { Button, Form, Modal } from 'react-bootstrap';
 import { useSocket, useAutoFocus } from '../../../hooks/index.js';
+import { hideModal } from '../../../slices/modalsSlice.js';
 
-const Remove = ({ item, onHide }) => {
+const Remove = () => {
+  const { item } = useSelector((state) => state.modals);
   const { t } = useTranslation();
   const emit = useSocket();
+  const dispatch = useDispatch();
+  const onHide = () => dispatch(hideModal());
   const btnRef = useAutoFocus();
   const formik = useFormik({
     initialValues: item,

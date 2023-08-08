@@ -11,7 +11,7 @@ import { useAuth, useSocket } from '../../hooks/index.js';
 const MessageInput = () => {
   const { t } = useTranslation();
   const emit = useSocket();
-  const channelId = useSelector((state) => state.channelsReducer.currentChannelId);
+  const channelId = useSelector((state) => state.channels.currentChannelId);
   const auth = useAuth();
   const { username } = auth.getUser();
   const formik = useFormik({

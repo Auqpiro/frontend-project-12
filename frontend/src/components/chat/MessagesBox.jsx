@@ -6,7 +6,7 @@ import { messagesSelectors } from '../../slices/messagesSlice.js';
 
 const MessagesBox = () => {
   const { t } = useTranslation();
-  const currentChannelId = useSelector((state) => state.channelsReducer.currentChannelId);
+  const currentChannelId = useSelector((state) => state.channels.currentChannelId);
   const nameCurrentChannel = useSelector((state) => {
     const currentChannel = channelsSelectors.selectById(state, currentChannelId);
     return (currentChannel && currentChannel.name) ? currentChannel.name : null;

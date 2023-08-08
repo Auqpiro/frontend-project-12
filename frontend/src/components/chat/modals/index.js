@@ -1,16 +1,18 @@
+import { useSelector } from 'react-redux';
 import Add from './Add';
 import Remove from './Remove';
 import Rename from './Rename';
 
 const modals = {
-  adding: Add,
-  renaming: Rename,
-  removing: Remove,
+  add: Add,
+  rename: Rename,
+  remove: Remove,
 };
 
-const getModal = ({ type, item }, hideModal) => {
+const Modal = () => {
+  const { type } = useSelector((state) => state.modals);
   const Component = modals[type];
-  return <Component item={item} onHide={hideModal} />;
+  return type && <Component />;
 };
 
-export default getModal;
+export default Modal;

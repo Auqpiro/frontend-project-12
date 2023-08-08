@@ -6,12 +6,14 @@ import { toast } from 'react-toastify';
 import { Button, Form, Modal } from 'react-bootstrap';
 import { useSocket, useAutoFocus } from '../../../hooks/index.js';
 import { channelsActions, channelsSelectors } from '../../../slices/channelsSlice.js';
+import { hideModal } from '../../../slices/modalsSlice.js';
 
-const Add = ({ onHide }) => {
+const Add = () => {
   const { t } = useTranslation();
   const inputRef = useAutoFocus();
   const emit = useSocket();
   const dispatch = useDispatch();
+  const onHide = () => dispatch(hideModal());
   const channelsNames = useSelector(channelsSelectors.selectAll).map(({ name }) => name);
   const formik = useFormik({
     initialValues: {

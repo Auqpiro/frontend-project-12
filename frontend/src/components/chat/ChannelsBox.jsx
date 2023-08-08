@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import {
@@ -10,34 +10,25 @@ import {
   ButtonGroup,
   Button,
 } from 'react-bootstrap';
-import getModal from './modals/index.js';
 import { channelsSelectors, channelsActions } from '../../slices/channelsSlice.js';
+import { showModal } from '../../slices/modalsSlice.js';
 import MessagesBox from './MessagesBox.jsx';
 import MessageInput from './MessageInput.jsx';
+import Modal from './modals/index.js';
 
 const ChannelsBox = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const currentChannelId = useSelector((state) => state.channelsReducer.currentChannelId);
   const selectCurrentChannel = (id) => dispatch(channelsActions.selectCurrentChannel(Number(id)));
+  const handleShow = (type, item = null) => dispatch(showModal({ type, item }));
+  const currentChannelId = useSelector((state) => state.channels.currentChannelId);
   const channels = useSelector(channelsSelectors.selectAll);
-
   const channelsRef = useRef(null);
   useEffect(() => {
     channelsRef.current
       ?.querySelector('.btn-primary')
       ?.scrollIntoView();
   }, [channels]);
-
-  const [modalInfo, setModalInfo] = useState({
-    type: null,
-    item: null,
-  });
-  const hideModal = () => setModalInfo({
-    type: null,
-    item: null,
-  });
-  const showModal = (type, item = null) => setModalInfo({ type, item });
   return (
     <>
       <Container className="h-100 my-4 overflow-hidden rounded shadow">
@@ -45,7 +36,7 @@ const ChannelsBox = () => {
           <Col className="col-4 col-md-2 border-end px-0 flex-column h-100 d-flex">
             <div className="d-flex mt-1 justify-content-between mb-2 pe-2 ps-4 p-4">
               <b>{t('channels.header')}</b>
-              <Button className="p-0 text-primary" variant="group-vertical" onClick={() => showModal('adding')}>
+              <Button className="p-0 text-primary" variant="group-vertical" onClick={() => handleShow('add')}>
                 <svg
                   fill="currentColor"
                   viewBox="0 0 16 16"
@@ -87,8 +78,8 @@ const ChannelsBox = () => {
                           <span className="visually-hidden">Управление каналом</span>
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
-                          <Dropdown.Item onClick={() => showModal('renaming', { id, name })}>{t('channels.dropdown.rename')}</Dropdown.Item>
-                          <Dropdown.Item onClick={() => showModal('removing', { id })}>{t('channels.dropdown.remove')}</Dropdown.Item>
+                          <Dropdown.Item onClick={() => handleShow('rename', { id, name })}>{t('channels.dropdown.rename')}</Dropdown.Item>
+                          <Dropdown.Item onClick={() => handleShow('remove', { id })}>{t('channels.dropdown.remove')}</Dropdown.Item>
                         </Dropdown.Menu>
                       </Dropdown>
                     )
@@ -113,7 +104,7 @@ const ChannelsBox = () => {
           </Col>
         </Row>
       </Container>
-      {modalInfo.type && getModal(modalInfo, hideModal)}
+      <Modal />
     </>
   );
 };

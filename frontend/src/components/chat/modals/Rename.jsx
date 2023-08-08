@@ -1,20 +1,24 @@
 import * as yup from 'yup';
 import { useRef, useEffect } from 'react';
 import { useFormik } from 'formik';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import { Button, Form, Modal } from 'react-bootstrap';
 import { useSocket } from '../../../hooks/index.js';
 import { channelsSelectors } from '../../../slices/channelsSlice.js';
+import { hideModal } from '../../../slices/modalsSlice.js';
 
-const Rename = ({ item, onHide }) => {
+const Rename = () => {
+  const { item } = useSelector((state) => state.modals);
   const { t } = useTranslation();
   const inputRef = useRef();
   useEffect(() => {
     inputRef.current.select();
   }, []);
   const emit = useSocket();
+  const dispatch = useDispatch();
+  const onHide = () => dispatch(hideModal());
   const channelsNames = useSelector(channelsSelectors.selectAll).map(({ name }) => name);
   const formik = useFormik({
     initialValues: item,
