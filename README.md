@@ -3,7 +3,7 @@
 
 # Chat
 
-View demo: [deployed version](https://chat-project-hexlet.up.railway.app/)
+View demo: [deployed version](https://message-rooms.up.railway.app/)
 
 ### Description
 Chat is a simplified version of Slack Chat (Real-time React/Redux app) that includes web socketing, interaction with REST APIs, use of React (with hooks), Redux (via reduxjs/toolkit), client-side routing, authorization and authentication, and of course build and deploy.
